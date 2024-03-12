@@ -37,7 +37,7 @@ namespace ChallengeStefaniniGroup.Core.Controllers
             return new() { Data = _mapper.Map<TaskModel>(objectDomain) };
         }
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<TaskModel>>> Add([FromForm] AddTaskModel newTask)
+        public async Task<ActionResult<ServiceResponse<TaskModel>>> Add(AddTaskModel newTask)
         {
             Domain.Entities.Task newObjDomain = _mapper.Map<Domain.Entities.Task>(newTask);
             var result = await _taskService.AddTask(newObjDomain);

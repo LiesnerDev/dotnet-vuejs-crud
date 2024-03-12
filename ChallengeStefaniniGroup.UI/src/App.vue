@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <nav class="navbar bg-dark navbar-expand-sm" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" to="/">Challenge StefaniniGroup</a>
+      <RouterLink class="navbar-brand" to="/">Challenge StefaniniGroup</RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,7 @@ import { RouterLink, RouterView } from 'vue-router'
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container-fluid">
     <RouterView />
   </div>
 </template>
