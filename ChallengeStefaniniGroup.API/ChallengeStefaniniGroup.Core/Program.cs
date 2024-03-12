@@ -4,8 +4,10 @@ using ChallengeStefaniniGroup.Data.Data.Helper;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var mongoDBSettings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDbSettings>();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddDbContext<DataContext>(options => options.UseMongoDB(mongoDBSettings.ConnectionURL, mongoDBSettings.DatabaseName));
@@ -22,9 +24,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.Run();
+app.MapControllers();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.Run();
