@@ -1,13 +1,16 @@
+using ChallengeStefaniniGroup.Data.Data;
+using ChallengeStefaniniGroup.Data.Data.Helper;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var mongoDBSettings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDbSettings>();
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
+builder.Services.AddDbContext<DataContext>(options => options.UseMongoDB(mongoDBSettings.ConnectionURL, mongoDBSettings.DatabaseName));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
