@@ -1,3 +1,4 @@
+using ChallengeStefaniniGroup.Application;
 using ChallengeStefaniniGroup.Data.Data;
 using ChallengeStefaniniGroup.Data.Data.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ builder.Services.AddSwaggerGen();
 var mongoDBSettings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDbSettings>();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddDbContext<DataContext>(options => options.UseMongoDB(mongoDBSettings.ConnectionURL, mongoDBSettings.DatabaseName));
+
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 
