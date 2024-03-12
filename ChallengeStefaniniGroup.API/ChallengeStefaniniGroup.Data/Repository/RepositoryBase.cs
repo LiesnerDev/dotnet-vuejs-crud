@@ -24,17 +24,17 @@ namespace ChallengeStefaniniGroup.Data.Repository
                 return false;
             }
         }
-        public async Task<bool> Update(T objectDomain)
+        public async Task<(bool, string)> Update(T objectDomain)
         {
             try
             {
                 _context.Set<T>().Update(objectDomain);
                 await _context.SaveChangesAsync();
-                return true;
+                return (true, string.Empty);
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                return (false, ex.Message);
             }
         }
         public async Task<bool> Delete(ObjectId id)

@@ -9,6 +9,7 @@ namespace ChallengeStefaniniGroup.Core
         {
             CreateMap<Domain.Entities.Task, TaskModel>();
             CreateMap<AddTaskModel, Domain.Entities.Task>();
+            CreateMap<UpdateTaskModel, Domain.Entities.Task>();
         }
     }
 }

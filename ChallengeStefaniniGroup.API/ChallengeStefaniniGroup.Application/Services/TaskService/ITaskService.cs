@@ -6,7 +6,7 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
         Task<Domain.Entities.Task?> GetTaskById(ObjectId id);
         Task<IEnumerable<Domain.Entities.Task>> GetAllTasks();
         Task<ServiceResponse<Domain.Entities.Task>> AddTask(Domain.Entities.Task newTask);
-        Task UpdateTask(Domain.Entities.Task updateTask);
+        Task<ServiceResponse<Domain.Entities.Task>> UpdateTask(Domain.Entities.Task updateTask);
         Task DeleteTask(ObjectId id);
     }
 }

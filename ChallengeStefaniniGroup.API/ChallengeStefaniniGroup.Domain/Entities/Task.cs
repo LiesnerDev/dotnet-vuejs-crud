@@ -9,5 +9,12 @@ namespace ChallengeStefaniniGroup.Domain.Entities
         public string Description { get; set; } = string.Empty!;
         public DateTime DateCreated { get; set; }
         public TaskStatusEnum Status { get; set; }
+
+        public void Update(string title, string description, TaskStatusEnum status)
+        {
+            Title = title;
+            Description = description;
+            Status = status;
+        }
     }
 }

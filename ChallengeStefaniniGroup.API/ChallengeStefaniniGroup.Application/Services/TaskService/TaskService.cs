@@ -11,13 +11,32 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
         public async Task<Domain.Entities.Task?> GetTaskById(ObjectId id) => await TaskRepository.GetById(id);
         public async Task<ServiceResponse<Domain.Entities.Task>> AddTask(Domain.Entities.Task newTask)
         {
-            if (await TaskRepository.Any(newTask.Title))
-                return new() { Success = false, Message = "Já existe uma tarefa com esse título" };
+            if (await AnyTask(newTask.Title))
+                return new() { Success = false, Message = $"Já existe uma tarefa com o título '{newTask}'" };
             if (!await TaskRepository.Add(newTask))
                 return new() { Success = false, Message = "Erro inesperado na inserção da tarefa." };
             return new() { Message = "Tarefa inserida com sucesso." };
         }
+        public async Task<ServiceResponse<Domain.Entities.Task>> UpdateTask(Domain.Entities.Task updateTask)
+        {
+            if (await AnyTask(updateTask.Title))
+                return new() { Success = false, Message = $"Já existe uma tarefa com o título '{updateTask.Title}'" };
+
+            Domain.Entities.Task? objDomain = await TaskRepository.GetById(updateTask.Id);
+
+            if (objDomain == null)
+                return new() { Success = false, Message = "Tarefa não encontrada" };
+
+            objDomain.Update(updateTask.Title, updateTask.Description, updateTask.Status);
+
+            var resultUpdate = await TaskRepository.Update(objDomain);
+            if (!resultUpdate.Item1)
+                return new() { Success = resultUpdate.Item1, Message = resultUpdate.Item2 };
+            return new() { Message = "Tarefa alterada com sucesso." };
+        }
         public async Task DeleteTask(ObjectId id) => await TaskRepository.Delete(id);
-        public async Task UpdateTask(Domain.Entities.Task updateTask) => await TaskRepository.Update(updateTask);
+
+        private async Task<bool> AnyTask(string title) =>
+            await TaskRepository.Any(title);
     }
 }

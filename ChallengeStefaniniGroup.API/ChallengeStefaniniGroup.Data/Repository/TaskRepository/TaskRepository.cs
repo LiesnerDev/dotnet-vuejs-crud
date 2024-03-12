@@ -8,7 +8,7 @@ namespace ChallengeStefaniniGroup.Data.Repository.TaskRepository
         public TaskRepository(DataContext context) : base(context) { }
 
         public async Task<bool> Any(string title) =>
-            await _context.Task.AnyAsync(x => x.Title.Equals(title));
+            await _context.Task.AnyAsync(x => x.Title.ToUpper().Equals(title.ToUpper()));
         
     }
 }

@@ -46,10 +46,12 @@ namespace ChallengeStefaniniGroup.Core.Controllers
             return Ok(new ServiceResponse<TaskModel>() { Message = "Tarefa adicionada com sucesso." });
         }
         [HttpPut]
-        public async Task<ServiceResponse<TaskModel>> Update(Domain.Entities.Task updateTask)
+        public async Task<ActionResult<ServiceResponse<TaskModel>>> Update(UpdateTaskModel updateTask)
         {
-            await _taskService.UpdateTask(updateTask);
-            return new() { Message = "Tarefa alterada com sucesso." };
+            var result = await _taskService.UpdateTask(_mapper.Map<Domain.Entities.Task>(updateTask));
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
         }
         [HttpDelete]
         public async Task<ServiceResponse<TaskModel>> Delete(string id)
