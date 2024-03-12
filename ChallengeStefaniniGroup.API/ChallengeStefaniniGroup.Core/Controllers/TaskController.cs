@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ChallengeStefaniniGroup.Application;
+using ChallengeStefaniniGroup.Application.Services.TaskService;
 using ChallengeStefaniniGroup.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -36,10 +37,13 @@ namespace ChallengeStefaniniGroup.Core.Controllers
             return new() { Data = _mapper.Map<TaskModel>(objectDomain) };
         }
         [HttpPost]
-        public async Task<ServiceResponse<TaskModel>> Add(Domain.Entities.Task newTask)
+        public async Task<ActionResult<ServiceResponse<TaskModel>>> Add([FromForm] AddTaskModel newTask)
         {
-            await _taskService.AddTask(newTask);
-            return new() { Message = "Tarefa adicionada com sucesso." };
+            Domain.Entities.Task newObjDomain = _mapper.Map<Domain.Entities.Task>(newTask);
+            var result = await _taskService.AddTask(newObjDomain);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(new ServiceResponse<TaskModel>() { Message = "Tarefa adicionada com sucesso." });
         }
         [HttpPut]
         public async Task<ServiceResponse<TaskModel>> Update(Domain.Entities.Task updateTask)

@@ -8,6 +8,7 @@ namespace ChallengeStefaniniGroup.Core
         public AutoMapperProfile()
         {
             CreateMap<Domain.Entities.Task, TaskModel>();
+            CreateMap<AddTaskModel, Domain.Entities.Task>();
         }
     }
 }

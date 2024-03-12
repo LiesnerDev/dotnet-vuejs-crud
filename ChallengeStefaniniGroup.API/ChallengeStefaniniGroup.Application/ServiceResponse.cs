@@ -1,4 +1,4 @@
-﻿namespace ChallengeStefaniniGroup.Core
+﻿namespace ChallengeStefaniniGroup.Application
 {
     public class ServiceResponse<T> where T : class
     {
