@@ -11,5 +11,6 @@ namespace ChallengeStefaniniGroup.Core.Models
         public DateTime DateCreated { get; set; }
         public TaskStatusEnum Status { get; set; }
         public string StatusDisplayName { get => Status.GetDisplayName(); }
+        public string DateCreatedFormated { get => DateCreated.ToShortDateString(); }
     }
 }
