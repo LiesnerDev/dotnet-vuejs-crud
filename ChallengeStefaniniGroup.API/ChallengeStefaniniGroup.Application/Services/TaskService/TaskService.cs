@@ -34,7 +34,13 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
                 return new() { Success = resultUpdate.Item1, Message = resultUpdate.Item2 };
             return new() { Message = "Tarefa alterada com sucesso." };
         }
-        public async Task DeleteTask(ObjectId id) => await TaskRepository.Delete(id);
+        public async Task<ServiceResponse<Domain.Entities.Task>> DeleteTask(ObjectId id)
+        {
+            var resultDelete = await TaskRepository.Delete(id);
+            if (!resultDelete.Item1)
+                return new() { Success = false, Message = resultDelete.Item2 };
+            return new() { Message = "Tarefa excluída com sucesso" };
+        }
 
         private async Task<bool> AnyTask(string title) =>
             await TaskRepository.Any(title);

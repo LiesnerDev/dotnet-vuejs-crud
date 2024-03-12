@@ -54,13 +54,15 @@ namespace ChallengeStefaniniGroup.Core.Controllers
             return Ok(result);
         }
         [HttpDelete]
-        public async Task<ServiceResponse<TaskModel>> Delete(string id)
+        public async Task<ActionResult<ServiceResponse<TaskModel>>> Delete(string id)
         {
             (ObjectId objectId, string message) = ConvertStringToObjectId(id);
             if (!string.IsNullOrEmpty(message))
-                return new() { Success = false, Message = message };
-            await _taskService.DeleteTask(objectId);
-            return new() { Message = "Tarefa excluída com sucesso" };
+                return BadRequest(new ServiceResponse<TaskModel>() { Success = false, Message = message });
+            var result = await _taskService.DeleteTask(objectId);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
         }
     }
 }

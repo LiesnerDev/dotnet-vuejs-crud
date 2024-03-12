@@ -32,23 +32,25 @@ namespace ChallengeStefaniniGroup.Data.Repository
                 await _context.SaveChangesAsync();
                 return (true, string.Empty);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return (false, ex.Message);
             }
         }
-        public async Task<bool> Delete(ObjectId id)
+        public async Task<(bool, string)> Delete(ObjectId id)
         {
             try
             {
                 var objectDomain = await GetById(id);
+                if (objectDomain == null)
+                    return (false, "Objeto não encontrado");
                 _context.Set<T>().Remove(objectDomain);
                 await _context.SaveChangesAsync();
-                return true;
+                return (true, string.Empty);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return (false, ex.Message);
             }
         }
     }
