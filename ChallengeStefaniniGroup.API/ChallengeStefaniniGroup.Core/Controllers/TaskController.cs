@@ -39,11 +39,11 @@ namespace ChallengeStefaniniGroup.Core.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<TaskModel>>> Add(AddTaskModel newTask)
         {
-            Domain.Entities.Task newObjDomain = _mapper.Map<Domain.Entities.Task>(newTask);
-            var result = await _taskService.AddTask(newObjDomain);
+            Domain.Entities.Task newObjectDomain = new(newTask.Title, newTask.Description);
+            var result = await _taskService.AddTask(newObjectDomain);
             if (!result.Success)
                 return BadRequest(result);
-            return Ok(new ServiceResponse<TaskModel>() { Message = "Tarefa adicionada com sucesso." });
+            return Ok(new ServiceResponse<TaskModel>() { Message = result.Message });
         }
         [HttpPut]
         public async Task<ActionResult<ServiceResponse<TaskModel>>> Update(UpdateTaskModel updateTask)
