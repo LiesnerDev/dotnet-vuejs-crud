@@ -2,7 +2,7 @@
 import { reactive, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
-import { getTaskById, putTask } from '../../services/task/taskResource';
+import { getTaskById, putTask } from '../../services/task/taskService';
 
 let updateTaskModel = reactive({
     id: "",
@@ -21,17 +21,17 @@ const router = useRouter();
 
 onMounted(() => {
     getTaskById(route.params.id).then((response) => {
-        updateTaskModel.id = response.data.data.id;
-        updateTaskModel.title = response.data.data.title;
-        updateTaskModel.description = response.data.data.description;
-        updateTaskModel.status = response.data.data.status;
+        updateTaskModel.id = response.data.id;
+        updateTaskModel.title = response.data.title;
+        updateTaskModel.description = response.data.description;
+        updateTaskModel.status = response.data.status;
         });
 });
 const UpdateTask = () => {
     putTask(updateTaskModel).then((response) => {
             if(!response.success){
                 Swal.fire({
-                    text: response.data.message,
+                    text: response.message,
                     icon: "error"
                 });
             }
@@ -39,14 +39,14 @@ const UpdateTask = () => {
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: response.data.message,
+                title: response.message,
                 showConfirmButton: false,
                 timer: 800
             });
         })
         .catch(error => {
             Swal.fire({
-                    text: error.response.data.message,
+                    text: error.response.message,
                     icon: "error"
                 });
         });
@@ -68,7 +68,7 @@ const UpdateTask = () => {
                     <input type="text" class="form-control" id="inputDescription" v-model="updateTaskModel.description" required />
                 </div>
                 <div class="mt-3">
-                    <label for="selectStatus" class="form-label">Descrição</label>
+                    <label for="selectStatus" class="form-label">Situação</label>
                     <select id="selectStatus" class="form-select" v-model="updateTaskModel.status">
                         <option v-for="option in statusOptions" :value="option.value">
                             {{ option.text }}

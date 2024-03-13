@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
-import { postTask } from '../../services/task/taskResource';
+import { postTask } from '../../services/task/taskService';
 
 let newTask = reactive({
     title: "",
@@ -13,9 +13,9 @@ const router = useRouter();
 
 const addTask = () => {
     postTask(newTask).then((response) => {
-            if (!response.data.success) {
+            if (!response.success) {
                 Swal.fire({
-                    text: response.data.message,
+                    text: response.message,
                     icon: "error"
                 });
             }
@@ -23,14 +23,14 @@ const addTask = () => {
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: response.data.message,
+                title: response.message,
                 showConfirmButton: false,
                 timer: 800
             });
         })
         .catch(error => {
             Swal.fire({
-                text: error.response.data.message,
+                text: error.response.message,
                 icon: "error"
             });
         });

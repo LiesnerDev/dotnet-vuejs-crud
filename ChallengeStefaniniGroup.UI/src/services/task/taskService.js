@@ -12,7 +12,7 @@ export const getTaskById = (id) => {
     }) => data)
 }
 
-export const addTask = (object) => {
+export const postTask = (object) => {
     return taskResource.postTask(object).then(({
         data
     }) => data)
