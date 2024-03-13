@@ -1,8 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import ConfirmDelete from '../../components/ConfirmDelete.vue';
 import Swal from 'sweetalert2';
+import * as modal from '../../utils/modal';
+import { getTask, deleteTask } from '../../services/task/taskService';
 
 const taskCollection = ref([]);
 const deleteItemId = ref(0);
@@ -10,30 +11,25 @@ const deleteItemId = ref(0);
 let deleteModalInstance;
 
 onMounted(() => {
-    deleteModalInstance = new window.bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-    axios.get("https://localhost:44380/api/Task")
-        .then((response) => {
-            taskCollection.value = response.data.data;
-        });
+    deleteModalInstance = modal.create('confirmDeleteModal');
+    getTask().then((response) => {
+        taskCollection.value = response.data;
+    });
 })
 
 const openDeleteModal = (id) => {
     deleteItemId.value = id;
-    deleteModalInstance.show();
+    modal.open(deleteModalInstance);
 }
 
-
 const confirmDelete = () => {
-    console.log(deleteItemId.value);
-    axios.delete(`https://localhost:44380/api/Task/${deleteItemId.value}`)
-        .then((response) => {
+    deleteTask(deleteItemId.value).then((response) => {
             taskCollection.value = taskCollection.value.filter(_ => _.id !== deleteItemId.value);
-            deleteModalInstance.hide();
+            modal.close(deleteModalInstance);
             Swal.fire({
-                title: response.data.message,
+                title: response.message,
                 icon: "success"
             })
-            console.log(response.data.message);
         })
 }
 

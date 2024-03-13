@@ -1,10 +1,10 @@
 <script setup>
-import axios from 'axios';
 import { reactive, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
+import { getTaskById, putTask } from '../../services/task/taskResource';
 
-let updateTask = reactive({
+let updateTaskModel = reactive({
     id: "",
     title: "",
     description: "",
@@ -20,18 +20,16 @@ const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-    axios.get(`https://localhost:44380/api/Task/${route.params.id}`)
-        .then((response) => {
-            updateTask.id = response.data.data.id;
-            updateTask.title = response.data.data.title;
-            updateTask.description = response.data.data.description;
-            updateTask.status = response.data.data.status;
+    getTaskById(route.params.id).then((response) => {
+        updateTaskModel.id = response.data.data.id;
+        updateTaskModel.title = response.data.data.title;
+        updateTaskModel.description = response.data.data.description;
+        updateTaskModel.status = response.data.data.status;
         });
 });
 const UpdateTask = () => {
-    axios.put("https://localhost:44380/api/Task", updateTask)
-        .then((response) => {
-            if(!response.data.success){
+    putTask(updateTaskModel).then((response) => {
+            if(!response.success){
                 Swal.fire({
                     text: response.data.message,
                     icon: "error"
@@ -63,15 +61,15 @@ const UpdateTask = () => {
             <div class="m-2">
                 <div class="mt-3">
                     <label for="inputTitle" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="inputTitle" v-model="updateTask.title" required />
+                    <input type="text" class="form-control" id="inputTitle" v-model="updateTaskModel.title" required />
                 </div>
                 <div class="mt-3">
                     <label for="inputDescription" class="form-label">Descrição</label>
-                    <input type="text" class="form-control" id="inputDescription" v-model="updateTask.description" required />
+                    <input type="text" class="form-control" id="inputDescription" v-model="updateTaskModel.description" required />
                 </div>
                 <div class="mt-3">
                     <label for="selectStatus" class="form-label">Descrição</label>
-                    <select id="selectStatus" class="form-select" v-model="updateTask.status">
+                    <select id="selectStatus" class="form-select" v-model="updateTaskModel.status">
                         <option v-for="option in statusOptions" :value="option.value">
                             {{ option.text }}
                         </option>

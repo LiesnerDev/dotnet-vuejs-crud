@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
+import { postTask } from '../../services/task/taskResource';
 
 let newTask = reactive({
     title: "",
@@ -12,8 +12,7 @@ let newTask = reactive({
 const router = useRouter();
 
 const addTask = () => {
-    axios.post("https://localhost:44380/api/Task", newTask)
-        .then((response) => {
+    postTask(newTask).then((response) => {
             if (!response.data.success) {
                 Swal.fire({
                     text: response.data.message,
