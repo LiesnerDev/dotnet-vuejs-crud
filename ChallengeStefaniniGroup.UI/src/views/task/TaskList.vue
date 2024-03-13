@@ -22,13 +22,14 @@ onMounted(() => {
                 <RouterLink class="btn btn-success" to="/task/add">Nova Tarefa</RouterLink>
             </div>
         </div>
-        <table class="table table-hover table-striped table-bordered table-bordered">
+        <table class="table table-striped table-hover table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Título</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Data de criação</th>
-                    <th scope="col">Situação</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Data de criação</th>
+                    <th>Situação</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody v-for="item in taskCollection" :key="item.id">
@@ -37,6 +38,7 @@ onMounted(() => {
                     <td>{{ item.description }}</td>
                     <td>{{ item.dateCreatedFormated }}</td>
                     <td>{{ item.statusDisplayName }}</td>
+                    <td><RouterLink class="btn btn-primary" :to="`/task/update/${item.id}`">Alterar</RouterLink></td>
                 </tr>
             </tbody>
         </table>
