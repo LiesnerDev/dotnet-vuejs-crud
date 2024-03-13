@@ -58,7 +58,7 @@ const confirmDelete = () => {
                     <td>{{ item.description }}</td>
                     <td>{{ item.dateCreatedFormated }}</td>
                     <td>{{ item.statusDisplayName }}</td>
-                    <td class="d-grid gap-2 d-md-flex">
+                    <td class="d-grid gap-2 d-md-flex justify-content-center">
                         <RouterLink class="btn btn-primary btn-sm" :to="`/task/update/${item.id}`">Alterar</RouterLink>
                         <button type="button" class="btn btn-danger btn-sm" @click="($event) => openDeleteModal(item.id)">
                             Excluir
