@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 let newTask = reactive({
     title: "",
@@ -13,13 +14,26 @@ const router = useRouter();
 const addTask = () => {
     axios.post("https://localhost:44380/api/Task", newTask)
         .then((response) => {
-            if(!response.data.success){
-                alert(response.data.message);
+            if (!response.data.success) {
+                Swal.fire({
+                    text: response.data.message,
+                    icon: "error"
+                });
             }
             router.push("/tasks");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: response.data.message,
+                showConfirmButton: false,
+                timer: 800
+            });
         })
-        .catch(error =>{
-            alert(error.response.data.message);
+        .catch(error => {
+            Swal.fire({
+                text: error.response.data.message,
+                icon: "error"
+            });
         });
 };
 </script>

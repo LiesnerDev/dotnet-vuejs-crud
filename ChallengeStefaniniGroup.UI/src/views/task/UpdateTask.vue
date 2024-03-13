@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { reactive, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 let updateTask = reactive({
     id: "",
@@ -31,12 +32,25 @@ const UpdateTask = () => {
     axios.put("https://localhost:44380/api/Task", updateTask)
         .then((response) => {
             if(!response.data.success){
-                alert(response.data.message);
+                Swal.fire({
+                    text: response.data.message,
+                    icon: "error"
+                });
             }
             router.push("/tasks");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: response.data.message,
+                showConfirmButton: false,
+                timer: 800
+            });
         })
         .catch(error => {
-            alert(error.response.data.message);
+            Swal.fire({
+                    text: error.response.data.message,
+                    icon: "error"
+                });
         });
 };
 </script>

@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import ConfirmDelete from '../../components/ConfirmDelete.vue';
+import Swal from 'sweetalert2';
 
 const taskCollection = ref([]);
 const deleteItemId = ref(0);
@@ -25,9 +26,14 @@ const openDeleteModal = (id) => {
 const confirmDelete = () => {
     console.log(deleteItemId.value);
     axios.delete(`https://localhost:44380/api/Task/${deleteItemId.value}`)
-        .then(() => {
+        .then((response) => {
             taskCollection.value = taskCollection.value.filter(_ => _.id !== deleteItemId.value);
             deleteModalInstance.hide();
+            Swal.fire({
+                title: response.data.message,
+                icon: "success"
+            })
+            console.log(response.data.message);
         })
 }
 
