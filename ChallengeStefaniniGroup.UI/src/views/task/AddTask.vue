@@ -12,8 +12,14 @@ const router = useRouter();
 
 const addTask = () => {
     axios.post("https://localhost:44380/api/Task", newTask)
-        .then(() => {
+        .then((response) => {
+            if(!response.data.success){
+                alert(response.data.message);
+            }
             router.push("/tasks");
+        })
+        .catch(error =>{
+            alert(error.response.data.message);
         });
 };
 </script>

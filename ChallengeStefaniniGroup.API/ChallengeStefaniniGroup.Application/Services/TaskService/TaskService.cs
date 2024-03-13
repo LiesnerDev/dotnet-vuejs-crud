@@ -12,7 +12,7 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
         public async Task<ServiceResponse<Domain.Entities.Task>> AddTask(Domain.Entities.Task newTask)
         {
             if (await AnyTask(new ObjectId(), newTask.Title))
-                return new() { Success = false, Message = $"Já existe uma tarefa com o título '{newTask}'" };
+                return new() { Success = false, Message = $"Já existe uma tarefa com o título '{newTask.Title}'" };
             if (!await TaskRepository.Add(newTask))
                 return new() { Success = false, Message = "Erro inesperado na inserção da tarefa." };
             return new() { Message = "Tarefa inserida com sucesso." };
