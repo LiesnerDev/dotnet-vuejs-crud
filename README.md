@@ -30,3 +30,4 @@
 
 - ## Escolhar Técnicas Interface Vue.js
 ...
+Expliquei no vídeo, não tive tempo de descrever aqui..
