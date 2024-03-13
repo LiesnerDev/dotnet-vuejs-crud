@@ -1,5 +1,6 @@
 ﻿using ChallengeStefaniniGroup.Data.Data;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 
 namespace ChallengeStefaniniGroup.Data.Repository.TaskRepository
 {
@@ -7,8 +8,8 @@ namespace ChallengeStefaniniGroup.Data.Repository.TaskRepository
     {
         public TaskRepository(DataContext context) : base(context) { }
 
-        public async Task<bool> Any(string title) =>
-            await _context.Task.AnyAsync(x => x.Title.ToUpper().Equals(title.ToUpper()));
+        public async Task<bool> Any(ObjectId id, string title) =>
+            await _context.Task.AnyAsync(x => !x.Id.Equals(id) && x.Title.ToUpper().Equals(title.ToUpper()));
         
     }
 }

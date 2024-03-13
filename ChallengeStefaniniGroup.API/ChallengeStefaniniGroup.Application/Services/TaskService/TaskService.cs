@@ -11,7 +11,7 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
         public async Task<Domain.Entities.Task?> GetTaskById(ObjectId id) => await TaskRepository.GetById(id);
         public async Task<ServiceResponse<Domain.Entities.Task>> AddTask(Domain.Entities.Task newTask)
         {
-            if (await AnyTask(newTask.Title))
+            if (await AnyTask(new ObjectId(), newTask.Title))
                 return new() { Success = false, Message = $"Já existe uma tarefa com o título '{newTask}'" };
             if (!await TaskRepository.Add(newTask))
                 return new() { Success = false, Message = "Erro inesperado na inserção da tarefa." };
@@ -19,7 +19,7 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
         }
         public async Task<ServiceResponse<Domain.Entities.Task>> UpdateTask(Domain.Entities.Task updateTask)
         {
-            if (await AnyTask(updateTask.Title))
+            if (await AnyTask(updateTask.Id, updateTask.Title))
                 return new() { Success = false, Message = $"Já existe uma tarefa com o título '{updateTask.Title}'" };
 
             Domain.Entities.Task? objDomain = await TaskRepository.GetById(updateTask.Id);
@@ -42,7 +42,7 @@ namespace ChallengeStefaniniGroup.Application.Services.TaskService
             return new() { Message = "Tarefa excluída com sucesso" };
         }
 
-        private async Task<bool> AnyTask(string title) =>
-            await TaskRepository.Any(title);
+        private async Task<bool> AnyTask(ObjectId id, string title) =>
+            await TaskRepository.Any(id, title);
     }
 }
