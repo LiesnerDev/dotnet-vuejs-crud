@@ -11,7 +11,6 @@ let newTask = reactive({
 const router = useRouter();
 
 const addTask = () => {
-    console.log(newTask);
     axios.post("https://localhost:44380/api/Task", newTask)
         .then(() => {
             router.push("/tasks");

@@ -53,7 +53,7 @@ namespace ChallengeStefaniniGroup.Core.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<TaskModel>>> Delete(string id)
         {
             (ObjectId objectId, string message) = ConvertStringToObjectId(id);
