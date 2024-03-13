@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { reactive, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 let updateTask = reactive({
     id: "",
@@ -9,7 +9,6 @@ let updateTask = reactive({
     description: "",
     status: "",
 });
-
 const statusOptions = ref([
     { text: 'Pedente', value: 0 },
     { text: 'Em Andamento', value: 1 },
@@ -17,6 +16,7 @@ const statusOptions = ref([
 ])
 
 const route = useRoute();
+const router = useRouter();
 
 onMounted(() => {
     axios.get(`https://localhost:44380/api/Task/${route.params.id}`)
@@ -27,12 +27,16 @@ onMounted(() => {
             updateTask.status = response.data.data.status;
         });
 });
-
-
 const UpdateTask = () => {
     axios.put("https://localhost:44380/api/Task", updateTask)
-        .then(() => {
-            route.push("/tasks");
+        .then((response) => {
+            if(!response.data.success){
+                alert(response.data.message);
+            }
+            router.push("/tasks");
+        })
+        .catch(error => {
+            alert(error.response.data.message);
         });
 };
 </script>
@@ -49,13 +53,11 @@ const UpdateTask = () => {
                 </div>
                 <div class="mt-3">
                     <label for="inputDescription" class="form-label">Descrição</label>
-                    <input type="text" class="form-control" id="inputDescription" v-model="updateTask.description"
-                        required />
+                    <input type="text" class="form-control" id="inputDescription" v-model="updateTask.description" required />
                 </div>
                 <div class="mt-3">
                     <label for="selectStatus" class="form-label">Descrição</label>
                     <select id="selectStatus" class="form-select" v-model="updateTask.status">
-                        <option selected value="">Selecione uma opção</option>
                         <option v-for="option in statusOptions" :value="option.value">
                             {{ option.text }}
                         </option>
