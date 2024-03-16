@@ -9,7 +9,7 @@
 - Executar Visual Studio;
 - Instalar via Nuget no projeto ChallengerStefaniniGroup.Core (Swashbuckle.AspNetCore (6.5.0), Microsoft.AspNetCore.OpenApi (7.0.14) e AutoMapper (13.0.1));
 - Instalar via Nuget no projeto ChallengerStefaniniGroup.Data (Microsoft.EntityFrameworkCore (7.0.14));
-- Instalar via Nuget no projeto ChallengerStefaniniGroup.Data (MongoDB.EntityFrameworkCore (7.0.0-preview.1)) ou executar o comando 'dotnet add package MongoDB.EntityFrameworkCore --version 7.0.0-preview.1';
+- Instalar via Nuget no projeto ChallengerStefaniniGroup.Domain (MongoDB.EntityFrameworkCore (7.0.0-preview.1)) ou executar o comando 'dotnet add package MongoDB.EntityFrameworkCore --version 7.0.0-preview.1';
 - Em ChallengerStefaniniGroup.Core/appsettings.json/appsettings.Development.json colocar a url de conexão da sua base local (Ao executar o primerio Add vai ser criada a base automatica);
 
 ## Instruções para executar a interface de Usuário Vue.js
