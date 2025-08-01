@@ -36,33 +36,5 @@ namespace ChallengeStefaniniGroup.Core.Controllers
                 return new() { Success = false, Message = "Tarefa não encontrada." };
             return new() { Data = _mapper.Map<TaskModel>(objectDomain) };
         }
-        [HttpPost]
-        public async Task<ActionResult<ServiceResponse<TaskModel>>> Add(AddTaskModel newTask)
-        {
-            Domain.Entities.Task newObjectDomain = new(newTask.Title, newTask.Description);
-            var result = await _taskService.AddTask(newObjectDomain);
-            if (!result.Success)
-                return BadRequest(result);
-            return Ok(new ServiceResponse<TaskModel>() { Message = result.Message });
-        }
-        [HttpPut]
-        public async Task<ActionResult<ServiceResponse<TaskModel>>> Update(UpdateTaskModel updateTask)
-        {
-            var result = await _taskService.UpdateTask(_mapper.Map<Domain.Entities.Task>(updateTask));
-            if (!result.Success)
-                return BadRequest(result);
-            return Ok(result);
-        }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ServiceResponse<TaskModel>>> Delete(string id)
-        {
-            (ObjectId objectId, string message) = ConvertStringToObjectId(id);
-            if (!string.IsNullOrEmpty(message))
-                return BadRequest(new ServiceResponse<TaskModel>() { Success = false, Message = message });
-            var result = await _taskService.DeleteTask(objectId);
-            if (!result.Success)
-                return BadRequest(result);
-            return Ok(result);
-        }
     }
 }
