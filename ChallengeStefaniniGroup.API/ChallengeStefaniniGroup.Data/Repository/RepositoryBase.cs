@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 namespace ChallengeStefaniniGroup.Data.Repository
 {
-    public class RepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected readonly DataContext _context;
         public RepositoryBase(DataContext context) => _context = context;
