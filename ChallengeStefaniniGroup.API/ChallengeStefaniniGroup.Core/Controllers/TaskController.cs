@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using ChallengeStefaniniGroup.Application;
-using ChallengeStefaniniGroup.Application.Services.TaskService;
-using ChallengeStefaniniGroup.Core.Models;
+﻿using ChallengeStefaniniGroup.Application.Task.Services.TaskService;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -12,29 +9,24 @@ namespace ChallengeStefaniniGroup.Core.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
-        private readonly IMapper _mapper;
-        public TaskController(ITaskService taskService, IMapper mapper)
+        public TaskController(ITaskService taskService)
         {
             _taskService = taskService;
-            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ServiceResponse<List<TaskModel>>> Get()
+        public async Task<IActionResult> Get()
         {
-            IEnumerable<Domain.Entities.Task> objsDomain = await _taskService.GetAllTasks();
-            List<TaskModel> objsModel = objsDomain.Select(x => _mapper.Map<TaskModel>(x)).ToList();
-            return new() { Data = objsModel };
+            var response = await _taskService.GetAsync();
+            return Ok(response);
         }
         [HttpGet("{id}")]
-        public async Task<ServiceResponse<TaskModel>> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            (ObjectId objectId, string message) = ConvertStringToObjectId(id);
-            if (!string.IsNullOrEmpty(message))
-                return new() { Success = false, Message = message };
-            Domain.Entities.Task? objectDomain = await _taskService.GetTaskById(objectId);
-            if (objectDomain == null)
-                return new() { Success = false, Message = "Tarefa não encontrada." };
-            return new() { Data = _mapper.Map<TaskModel>(objectDomain) };
+            var response = await _taskService.GetAsync(ObjectId.Parse(id));
+            if (response == null)
+                return NotFound(id);
+
+            return Ok(response);
         }
     }
 }
