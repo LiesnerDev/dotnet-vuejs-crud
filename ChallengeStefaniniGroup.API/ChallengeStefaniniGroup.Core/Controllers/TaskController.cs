@@ -20,7 +20,7 @@ namespace ChallengeStefaniniGroup.Core.Controllers
             return Ok(response);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             var response = await _taskService.GetAsync(ObjectId.Parse(id));
             if (response == null)
